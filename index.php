@@ -6,9 +6,7 @@ if (!empty($_POST)) {
     //die("<pre>POST: " . print_r($_POST, true));
     //die("<pre>SERVER: " . print_r($_SERVER, true));
     //die("<pre>GLOBALS: " . print_r($GLOBALS, true));
-    if (empty($_FILES['bookmarks'])) {
-        $errors[] = "Bookmarks file wasn't uploaded.";
-    } else {
+    if (!empty($_FILES['bookmarks'])) {
         echo "<pre>FILE: " . print_r($_FILES, true) . "</pre>";
         //FILE: Array
         //(
@@ -26,9 +24,7 @@ if (!empty($_POST)) {
         $fileNameInfo = explode('.', $bookmarks['name']);
         echo "<pre>fileNameInfo: " . print_r($fileNameInfo, true) . "</pre>";
         $fileExtension = end($fileNameInfo);
-        if ($fileExtension != 'html') {
-            $errors[] = "File extension is not .html.";
-        } else {
+        if ($fileExtension == 'html') {
             echo "fileExtension = $fileExtension<br>";
             //$fileContents = file_get_contents();
             //die("fileContents: $fileContents");
@@ -46,8 +42,8 @@ if (!empty($_POST)) {
             } else {
                 die("unable to save new DOM file name $domFixedFileName");
             }
-        }
-    }
+        } else $errors[] = "File extension is not .html.";
+    } else $errors[] = "Bookmarks file wasn't uploaded.";
 }
 ?>
 <?php echo !empty($_POST['timestamp']) ? "<p>Submitted timestamp: {$_POST['timestamp']}</p>" : null; ?>
